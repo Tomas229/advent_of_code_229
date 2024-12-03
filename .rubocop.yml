@@ -1,0 +1,12 @@
+AllCops:
+  NewCops: enable
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false

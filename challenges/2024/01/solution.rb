@@ -7,7 +7,18 @@ module Year2024
     # Call `data` to access either an array of the parsed data, or a single record for a 1-line input file
 
     def part_1
-      nil
+      left = []
+      right = []
+      data.each do |d|
+        l, r = d.split
+        left += [l.to_i]
+        right += [r.to_i]
+      end
+      left.sort!
+      right.sort!
+
+      distance = left.zip(right).map { |x| x.reduce(:-).abs }
+      distance.reduce(:+)
     end
 
     def part_2

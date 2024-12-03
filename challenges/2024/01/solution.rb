@@ -14,8 +14,7 @@ module Year2024
 
     def part_2
       custom_process(data)
-      freq_hash = @right.group_by { |a| a }
-      freq_hash.transform_values!(&:size)
+      freq_hash = @right.frequency
       res = 0
       @left.each do |n|
         res += (freq_hash[n] || 0) * n

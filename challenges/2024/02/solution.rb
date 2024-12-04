@@ -16,7 +16,12 @@ module Year2024
     end
 
     def part_2
-      nil
+      res = 0
+      data.each do |report|
+        report = report.split(' ').map(&:to_i)
+        res += 1 if brute_force_report_checker(report)
+      end
+      res
     end
 
     private
@@ -36,6 +41,14 @@ module Year2024
         diff = report[i] - report[i + 1]
         return false unless 1 <= diff.abs && diff.abs <= 3
       end
+    end
+
+    def brute_force_report_checker(report)
+      return true if report_safe?(report)
+      report.size.times do |i|
+        return true if report_safe?(report.dup.tap { |list| list.delete_at(i) })
+      end
+      false
     end
   end
 end

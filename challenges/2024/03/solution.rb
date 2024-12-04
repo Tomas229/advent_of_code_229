@@ -16,7 +16,15 @@ module Year2024
     end
 
     def part_2
-      nil
+      sum = 0
+      enabled = true
+      parse_input.each do |line|
+        line.scan(/mul\(\d{1,3},\d{1,3}\)|do\(\)|don't\(\)/).each do |ins|
+          res, enabled = calculate_instruction(ins, enabled)
+          sum += res
+        end
+      end
+      sum
     end
 
     private
@@ -32,6 +40,18 @@ module Year2024
     # end
     def parse_input
       @input.split('\n')
+    end
+
+    def calculate_instruction(ins, enabled)
+      case ins
+      when /do\(\)/
+        [0, true]
+      when /don't\(\)/
+        [0, false]
+      else
+        res = enabled ? ins.scan(/\d{1,3}/).map(&:to_i).reduce(&:*) : 0
+        [res, enabled]
+      end
     end
   end
 end

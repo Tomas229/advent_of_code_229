@@ -18,7 +18,14 @@ module Year2024
     end
 
     def part_2
-      nil
+      sum = 0
+      m = Matrix.new(data.map(&:chars))
+      m.y.times do |y|
+        m.x.times do |x|
+          sum += find_x_mas(m, x, y) if m.coord(x, y) == 'A'
+        end
+      end
+      sum
     end
 
     private
@@ -48,5 +55,10 @@ module Year2024
       1
     end
 
+    def find_x_mas(matrix, x_coord, y_coord)
+      word_1 = [matrix.coord(x_coord - 1, y_coord + 1) || '', matrix.coord(x_coord + 1, y_coord - 1) || ''].sort
+      word_2 = [matrix.coord(x_coord + 1, y_coord + 1) || '', matrix.coord(x_coord - 1, y_coord - 1) || ''].sort
+      word_1 == word_2 && word_1 == %w[M S] ? 1 : 0
+    end
   end
 end

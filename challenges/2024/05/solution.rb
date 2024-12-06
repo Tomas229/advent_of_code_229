@@ -12,7 +12,13 @@ module Year2024
     end
 
     def part_2
-      nil
+      parse_input
+      sum = 0
+      @manuals.each do |manual|
+        ordered_manual = order_manual(manual)
+        sum += calc_middle_value(ordered_manual) if manual != ordered_manual
+      end
+      sum
     end
 
     private

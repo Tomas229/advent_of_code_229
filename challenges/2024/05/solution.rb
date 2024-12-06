@@ -7,21 +7,32 @@ module Year2024
     # Call `data` to access either an array of the parsed data, or a single record for a 1-line input file
 
     def part_1
-      nil
+      parse_input
+      @manuals.select { |manual| manual == order_manual(manual) }.sum { |manual| calc_middle_value(manual) }
     end
 
     def part_2
       nil
     end
 
-    # Processes each line of the input file and stores the result in the dataset
-    # def process_input(line)
-    #   line.map(&:to_i)
-    # end
+    private
 
-    # Processes the dataset as a whole
-    # def process_dataset(set)
-    #   set
-    # end
+    def calc_middle_value(manual)
+      manual[(manual.size - 1) / 2].to_i
+    end
+
+    def parse_input
+      i = data.find_index('')
+      @manuals = data[i + 1..].map { |m| m.split(',') }
+      @rules = {}
+      data[0...i].each do |line|
+        a, b = line.split('|')
+        @rules[a] = (@rules[a] || []).push(b)
+      end
+    end
+
+    def order_manual(manual)
+      manual.sort { |x, y| @rules[x]&.include?(y) ? -1 : 1 }
+    end
   end
 end

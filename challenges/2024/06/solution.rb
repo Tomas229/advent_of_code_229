@@ -24,7 +24,17 @@ module Year2024
     end
 
     def part_2
-      nil
+      sum = 0
+      original_path = setup_matrix
+      move_guardian(original_path)
+      original_path.each_coord do |x, y|
+        next unless original_path.coord(x, y) == 'X'
+
+        new_matrix = setup_matrix
+        new_matrix.change_value(x, y, '#')
+        sum += find_loop(new_matrix) ? 1 : 0
+      end
+      sum
     end
 
     private
@@ -42,6 +52,19 @@ module Year2024
       sum
     end
 
+    def find_loop(matrix)
+      direction = :UP
+      while (next_value = matrix.coord(*next_coords(matrix.pointer, direction)))
+        while next_value == '#'
+          direction = turn_direction(direction)
+          next_value = matrix.coord(*next_coords(matrix.pointer, direction))
+        end
+        loop_start = take_step_loop(matrix, *next_coords(matrix.pointer, direction), direction, loop_start)
+        return true if loop_start == true
+      end
+      false
+    end
+
     def turn_direction(direction)
       TURN_DICT[direction]
     end
@@ -52,11 +75,23 @@ module Year2024
 
     def take_step(matrix, x_coord, y_coord)
       new_value = matrix.move_pointer(x_coord, y_coord)
-      if new_value != 'X' && new_value != '^'
+      if new_value == '.'
         matrix.change_value(x_coord, y_coord, 'X')
         return 1
       end
       0
+    end
+
+    def take_step_loop(matrix, x_coord, y_coord, direction, loop_start)
+      new_value = matrix.move_pointer(x_coord, y_coord)
+      if new_value == '.'
+        matrix.change_value(x_coord, y_coord, 'X')
+        []
+      elsif !loop_start || loop_start.empty?
+        [x_coord, y_coord, direction]
+      else
+        loop_start == [x_coord, y_coord, direction] ? true : loop_start
+      end
     end
 
     def setup_matrix

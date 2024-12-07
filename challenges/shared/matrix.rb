@@ -51,4 +51,13 @@ class Matrix
       puts row.join
     end
   end
+
+  # Yields a block to every coord
+  def each_coord
+    @y.times do |row|
+      @x.times do |col|
+        yield(row, col)
+      end
+    end
+  end
 end

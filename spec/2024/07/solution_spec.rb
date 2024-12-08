@@ -6,18 +6,25 @@ RSpec.describe Year2024::Day07 do
   let(:input) { File.read(File.join(File.dirname(__FILE__), '../../../challenges/2024/07/input.txt')) }
   let(:example_input) do
     <<~EOF
-      change
-      me
+      190: 10 19
+      3267: 81 40 27
+      83: 17 5
+      156: 15 6
+      7290: 6 8 6 15
+      161011: 16 10 13
+      192: 17 8 14
+      21037: 9 7 18 13
+      292: 11 6 16 20
     EOF
   end
 
   describe 'part 1' do
-    it 'returns nil for the example input' do
-      expect(described_class.part_1(example_input)).to eq(nil)
+    it 'returns 3749 for the example input' do
+      expect(described_class.part_1(example_input)).to eq(3749)
     end
 
-    it 'returns nil for my input' do
-      expect(described_class.part_1(input)).to eq(nil)
+    it 'returns 2941973819040 for my input' do
+      expect(described_class.part_1(input)).to eq(2_941_973_819_040)
     end
   end
 

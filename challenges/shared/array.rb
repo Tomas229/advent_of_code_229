@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Métodos útiles para Array
+# Array useful methods
 class Array
-  # @return [Hash] Entrega un hash con los elementos del array y la frecuencia que tiene cada uno en el mismo.
+  # @return [Hash] Returns a hash with the elements of the array and their respective frequency within it.
   def frequency
     group_by { |a| a }.transform_values(&:size)
   end

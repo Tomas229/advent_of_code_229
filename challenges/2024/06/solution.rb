@@ -20,46 +20,46 @@ module Year2024
     }.freeze
 
     def part_1
-      move_guardian(setup_matrix)
+      move_guardian(setup_grid)
     end
 
     def part_2
       sum = 0
-      original_path = setup_matrix
+      original_path = setup_grid
       move_guardian(original_path)
       original_path.each_coord do |x, y|
         next unless original_path.coord(x, y) == 'X'
 
-        new_matrix = setup_matrix
-        new_matrix.change_value(x, y, '#')
-        sum += find_loop(new_matrix) ? 1 : 0
+        new_grid = setup_grid
+        new_grid.change_value(x, y, '#')
+        sum += find_loop(new_grid) ? 1 : 0
       end
       sum
     end
 
     private
 
-    def move_guardian(matrix)
+    def move_guardian(grid)
       sum = 1
       direction = :UP
-      while (next_value = matrix.coord(*next_coords(matrix.pointer, direction)))
+      while (next_value = grid.coord(*next_coords(grid.pointer, direction)))
         while next_value == '#'
           direction = turn_direction(direction)
-          next_value = matrix.coord(*next_coords(matrix.pointer, direction))
+          next_value = grid.coord(*next_coords(grid.pointer, direction))
         end
-        sum += take_step(matrix, *next_coords(matrix.pointer, direction))
+        sum += take_step(grid, *next_coords(grid.pointer, direction))
       end
       sum
     end
 
-    def find_loop(matrix)
+    def find_loop(grid)
       direction = :UP
-      while (next_value = matrix.coord(*next_coords(matrix.pointer, direction)))
+      while (next_value = grid.coord(*next_coords(grid.pointer, direction)))
         while next_value == '#'
           direction = turn_direction(direction)
-          next_value = matrix.coord(*next_coords(matrix.pointer, direction))
+          next_value = grid.coord(*next_coords(grid.pointer, direction))
         end
-        loop_start = take_step_loop(matrix, *next_coords(matrix.pointer, direction), direction, loop_start)
+        loop_start = take_step_loop(grid, *next_coords(grid.pointer, direction), direction, loop_start)
         return true if loop_start == true
       end
       false
@@ -73,19 +73,19 @@ module Year2024
       STEP_DICT[direction].zip(pos_array).map(&:sum)
     end
 
-    def take_step(matrix, x_coord, y_coord)
-      new_value = matrix.move_pointer(x_coord, y_coord)
+    def take_step(grid, x_coord, y_coord)
+      new_value = grid.move_pointer(x_coord, y_coord)
       if new_value == '.'
-        matrix.change_value(x_coord, y_coord, 'X')
+        grid.change_value(x_coord, y_coord, 'X')
         return 1
       end
       0
     end
 
-    def take_step_loop(matrix, x_coord, y_coord, direction, loop_start)
-      new_value = matrix.move_pointer(x_coord, y_coord)
+    def take_step_loop(grid, x_coord, y_coord, direction, loop_start)
+      new_value = grid.move_pointer(x_coord, y_coord)
       if new_value == '.'
-        matrix.change_value(x_coord, y_coord, 'X')
+        grid.change_value(x_coord, y_coord, 'X')
         []
       elsif !loop_start || loop_start.empty?
         [x_coord, y_coord, direction]
@@ -94,7 +94,7 @@ module Year2024
       end
     end
 
-    def setup_matrix
+    def setup_grid
       guard = [0, 0]
       data.each_with_index do |d, i|
         if d.index('^')
@@ -102,7 +102,7 @@ module Year2024
           break
         end
       end
-      Matrix.new(data.map(&:chars), pointer: guard)
+      Grid.new(data.map(&:chars), pointer: guard)
     end
   end
 end

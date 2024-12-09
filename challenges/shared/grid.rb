@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
-# Matrix. An y-sized array of x-sized arrays representing a Matrix.
-class Matrix
+# Grid. An y-sized array of x-sized arrays representing a Grid.
+class Grid
   attr_reader :x, :y, :pointer
 
-  def initialize(matrix, pointer: [0, 0])
-    @matrix = matrix
-    @x = matrix[0].size
-    @y = matrix.size
+  def initialize(grid, pointer: [0, 0])
+    @grid = grid
+    @x = grid[0].size
+    @y = grid.size
     @pointer = pointer
   end
 
-  # @return [Boolean] if the matrix rows are all of the same size.
-  def valid_matrix?
-    @matrix.each do |row|
+  # @return [Boolean] if the grid rows are all of the same size.
+  def valid_grid?
+    @grid.each do |row|
       return false if row.size != @x
     end
     true
@@ -23,7 +23,7 @@ class Matrix
   def coord(x_coord, y_coord)
     return nil if x_coord.negative? || x_coord >= @x || y_coord.negative? || y_coord >= @y
 
-    @matrix[y_coord][x_coord]
+    @grid[y_coord][x_coord]
   end
 
   # Updates value saved at (x_coord, y_coord)
@@ -31,7 +31,7 @@ class Matrix
   # @param [Integer] y_coord
   # @param [Object] value
   def change_value(x_coord, y_coord, value)
-    @matrix[y_coord][x_coord] = value
+    @grid[y_coord][x_coord] = value
   end
 
   # Updates pointer position to (x_coord, y_coord) if its a valid position.
@@ -44,10 +44,10 @@ class Matrix
     new_pos_value
   end
 
-  # Prints the whole matrix
-  # @return [Matrix] self
-  def print_matrix
-    @matrix.each do |row|
+  # Prints the whole grid
+  # @return [Grid] self
+  def print
+    @grid.each do |row|
       puts row.join
     end
   end

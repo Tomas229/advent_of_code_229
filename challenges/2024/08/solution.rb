@@ -33,18 +33,18 @@ module Year2024
     private
 
     def my_setup
-      setup_matrix
+      setup_grid
       setup_antennas_dict
     end
 
-    def setup_matrix
-      @matrix = Matrix.new(data.map(&:chars))
+    def setup_grid
+      @grid = Grid.new(data.map(&:chars))
     end
 
     def setup_antennas_dict
       @antennas = {}
-      @matrix.each_coord do |x, y|
-        value = @matrix.coord(x, y)
+      @grid.each_coord do |x, y|
+        value = @grid.coord(x, y)
         @antennas[value] = (@antennas[value] || []).push([x, y]) if value != '.'
       end
     end
@@ -64,9 +64,9 @@ module Year2024
     def add_anti_node(point_1, point_2, mult = 1)
       delta = sus_points(point_1, point_2)
       new_point = sum_points(point_1, mult_point(delta, mult))
-      inside_matrix = @matrix.coord(*new_point).nil?
-      @anti_nodes.push(new_point) unless inside_matrix || @anti_nodes.include?(new_point)
-      !inside_matrix
+      inside_grid = @grid.coord(*new_point).nil?
+      @anti_nodes.push(new_point) unless inside_grid || @anti_nodes.include?(new_point)
+      !inside_grid
     end
 
     def add_resonant_anti_node(point_1, point_2)

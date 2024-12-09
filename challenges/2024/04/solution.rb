@@ -9,22 +9,14 @@ module Year2024
     def part_1
       sum = 0
       m = Grid.new(data.map(&:chars))
-      m.y.times do |y|
-        m.x.times do |x|
-          sum += find_xmas(m, x, y) if m.coord(x, y) == 'X'
-        end
-      end
+      m.each_coord { |x, y| sum += find_xmas(m, x, y) if m.coord(x, y) == 'X' }
       sum
     end
 
     def part_2
       sum = 0
       m = Grid.new(data.map(&:chars))
-      m.y.times do |y|
-        m.x.times do |x|
-          sum += find_x_mas(m, x, y) if m.coord(x, y) == 'A'
-        end
-      end
+      m.each_coord { |x, y| sum += find_x_mas(m, x, y) if m.coord(x, y) == 'A' }
       sum
     end
 

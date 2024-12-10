@@ -7,7 +7,16 @@ module Year2024
     # Call `data` to access either an array of the parsed data, or a single record for a 1-line input file
 
     def part_1
-      nil
+      array = parse_filesystem
+
+      array.each_with_index do |num, index|
+        if num == '.'
+          num = array.pop while num == '.'
+          array[index] = num
+        end
+      end
+
+      check_sum(array)
     end
 
     def part_2
@@ -23,5 +32,26 @@ module Year2024
     # def process_dataset(set)
     #   set
     # end
+    private
+
+    def check_sum(array)
+      sum = 0
+      array.each_with_index do |c, i|
+        sum += c * i
+      end
+      sum
+    end
+
+    def parse_filesystem
+      array = []
+      data.chars.each_with_index do |num, index|
+        array += if index.even?
+                   [index / 2] * num.to_i
+                 else
+                   ['.'] * num.to_i
+                 end
+      end
+      array
+    end
   end
 end

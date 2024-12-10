@@ -6,6 +6,8 @@ module Year2024
     # @input is available if you need the raw data input
     # Call `data` to access either an array of the parsed data, or a single record for a 1-line input file
 
+    DiskMemory = Struct.new(:type, :quantity, :data_index)
+
     def part_1
       array = parse_filesystem
 
@@ -24,7 +26,7 @@ module Year2024
 
       reverse_index = array.size
       while (reverse_index -= 1).positive?
-        next unless (item = array[reverse_index])[:type] == :data
+        next unless (item = array[reverse_index]).type == :data
 
         reverse_index += search_memory(array, reverse_index, item)
       end
@@ -54,8 +56,8 @@ module Year2024
       sum = 0
       index = -1
       array.each do |c|
-        new_index = index + c[:quantity]
-        sum += c[:data_index] * ((((new_index + 1) * new_index) / 2) - (((index + 1) * index) / 2)) if c[:type] == :data
+        new_index = index + c.quantity
+        sum += c.data_index * ((((new_index + 1) * new_index) / 2) - (((index + 1) * index) / 2)) if c.type == :data
         index = new_index
       end
       sum
@@ -77,9 +79,9 @@ module Year2024
       array = []
       data.chars.each_with_index do |num, index|
         array += if index.even?
-                   [{ type: :data, quantity: num.to_i, data_index: index / 2 }]
+                   [DiskMemory.new(type: :data, quantity: num.to_i, data_index: index / 2)]
                  else
-                   [{ type: :space, quantity: num.to_i }]
+                   [DiskMemory.new(type: :space, quantity: num.to_i, data_index: '.')]
                  end
       end
       array
@@ -88,7 +90,7 @@ module Year2024
     def search_memory(array, reverse_index, item)
       array.each_with_index do |space, i|
         break if i > reverse_index
-        next unless space[:type] == :space && (delta = space[:quantity] - item[:quantity]) > -1
+        next unless space.type == :space && (delta = space.quantity - item.quantity) > -1
 
         move_file(array, delta, i, reverse_index)
         return delta.positive? ? 1 : 0
@@ -100,8 +102,8 @@ module Year2024
       space = array[space_index]
       file = array[file_index]
       if delta.positive?
-        space[:quantity] = delta
-        array[file_index] = { type: :space, quantity: file[:quantity] }
+        space.quantity = delta
+        array[file_index] = DiskMemory.new(type: :space, quantity: file.quantity, data_index: '.')
         array.insert(space_index, file)
       else
         array[space_index] = file

@@ -16,7 +16,11 @@ module Year2024
     end
 
     def part_2
-      nil
+      sum = 0
+      @grid.each_coord do |x, y|
+        sum += find_peak(x, y).size if @grid.coord(x, y).zero?
+      end
+      sum
     end
 
     private

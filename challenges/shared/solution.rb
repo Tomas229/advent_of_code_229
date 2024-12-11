@@ -12,6 +12,7 @@ class Solution
 
   def initialize(input)
     @input = input
+    setup_data
   end
 
   def data
@@ -23,6 +24,8 @@ class Solution
       processed.length == 1 ? processed.first : process_dataset(processed)
     end
   end
+
+  def setup_data; end
 
   private
 

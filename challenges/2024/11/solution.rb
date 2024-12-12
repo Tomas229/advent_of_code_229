@@ -15,7 +15,9 @@ module Year2024
     end
 
     def part_2
-      nil
+      rocks = PopulationGrowthSimulator.new(data.split)
+      rocks.iterate(75) { |element, quality| rock_rules(element, quality) }
+      rocks.total
     end
 
     private
@@ -43,6 +45,23 @@ module Year2024
 
     def divide_odd_rock(number, blinks)
       stone_division((number.to_i * 2024).to_s, blinks - 1)
+    end
+
+    def rock_rules(element, quantity)
+      if element == '0'
+        { '1' => quantity }
+      elsif element.size.even?
+        handle_even_case(element, quantity)
+      else
+        { (element.to_i * 2024).to_s => quantity }
+      end
+    end
+
+    def handle_even_case(element, quantity)
+      half = element.size / 2
+      { element[...half].to_i.to_s => quantity }.merge(
+        { element[half..].to_i.to_s => quantity }
+      ) { |_key, val_1, val_2| val_1 + val_2 }
     end
   end
 end

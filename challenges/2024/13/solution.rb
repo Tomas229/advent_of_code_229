@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'matrix' unless defined?(Matrix)
 module Year2024
   # Solution
   class Day13 < Solution

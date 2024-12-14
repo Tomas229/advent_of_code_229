@@ -18,21 +18,27 @@ module Year2024
     end
 
     def part_2
-      nil
+      tokens = 0
+      index = 0
+      while index < data.size
+        tokens += token_calculator(data, index, 10_000_000_000_000)
+        index += 4
+      end
+      tokens
     end
 
     private
 
-    def token_calculator(data, index)
+    def token_calculator(data, index, offset = 0)
       coefficients = coefficients_matrix_creator(data, index)
       return 0 if coefficients.determinant.zero?
 
-      res = sol_calculator(data, index, coefficients)
+      res = sol_calculator(data, index, coefficients, offset)
       a = res.element(0, 0)
       b = res.element(1, 0)
-      return 0 if a.denominator != 1 && b.denominator != 1
+      return (3 * a.to_i) + b.to_i if a.denominator == 1 && b.denominator == 1
 
-      (3 * a.to_i) + b.to_i
+      0
     end
 
     def coefficients_matrix_creator(data, index)
@@ -41,9 +47,9 @@ module Year2024
       Matrix[[eq_1[0].to_i, eq_2[0].to_i], [eq_1[1].to_i, eq_2[1].to_i]]
     end
 
-    def sol_calculator(data, index, coefficients)
+    def sol_calculator(data, index, coefficients, offset)
       eq_3 = data[index + 2].scan(/\d+/)
-      coefficients.inverse * Matrix[[eq_3[0].to_i], [eq_3[1].to_i]]
+      coefficients.inverse * Matrix[[eq_3[0].to_i + offset], [eq_3[1].to_i + offset]]
     end
   end
 end

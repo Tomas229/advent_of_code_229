@@ -44,7 +44,7 @@ module Year2024
     def setup_antennas_dict
       @antennas = {}
       @grid.each_coord do |x, y|
-        value = @grid.coord(x, y)
+        value = @grid.check_cell(x, y)&.value
         @antennas[value] = (@antennas[value] || []).push([x, y]) if value != '.'
       end
     end
@@ -64,7 +64,7 @@ module Year2024
     def add_anti_node(point_1, point_2, mult = 1)
       delta = sus_points(point_1, point_2)
       new_point = sum_points(point_1, mult_point(delta, mult))
-      inside_grid = @grid.coord(*new_point).nil?
+      inside_grid = @grid.check_cell(*new_point)&.value.nil?
       @anti_nodes.push(new_point) unless inside_grid || @anti_nodes.include?(new_point)
       !inside_grid
     end

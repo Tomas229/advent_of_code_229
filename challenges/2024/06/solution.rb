@@ -28,7 +28,7 @@ module Year2024
       original_path = setup_grid
       move_guardian(original_path)
       original_path.each_coord do |x, y|
-        next unless original_path.coord(x, y) == 'X'
+        next unless original_path.check_cell(x, y)&.value == 'X'
 
         new_grid = setup_grid
         new_grid.change_value(x, y, '#')
@@ -42,10 +42,10 @@ module Year2024
     def move_guardian(grid)
       sum = 1
       direction = :UP
-      while (next_value = grid.coord(*next_coords(grid.pointer, direction)))
+      while (next_value = grid.check_cell(*next_coords(grid.pointer, direction))&.value)
         while next_value == '#'
           direction = turn_direction(direction)
-          next_value = grid.coord(*next_coords(grid.pointer, direction))
+          next_value = grid.check_cell(*next_coords(grid.pointer, direction))&.value
         end
         sum += take_step(grid, *next_coords(grid.pointer, direction))
       end
@@ -54,10 +54,10 @@ module Year2024
 
     def find_loop(grid)
       direction = :UP
-      while (next_value = grid.coord(*next_coords(grid.pointer, direction)))
+      while (next_value = grid.check_cell(*next_coords(grid.pointer, direction))&.value)
         while next_value == '#'
           direction = turn_direction(direction)
-          next_value = grid.coord(*next_coords(grid.pointer, direction))
+          next_value = grid.check_cell(*next_coords(grid.pointer, direction))&.value
         end
         loop_start = take_step_loop(grid, *next_coords(grid.pointer, direction), direction, loop_start)
         return true if loop_start == true
@@ -74,7 +74,7 @@ module Year2024
     end
 
     def take_step(grid, x_coord, y_coord)
-      new_value = grid.move_pointer(x_coord, y_coord)
+      new_value = grid.move_pointer(x_coord, y_coord)&.value
       if new_value == '.'
         grid.change_value(x_coord, y_coord, 'X')
         return 1
@@ -83,7 +83,7 @@ module Year2024
     end
 
     def take_step_loop(grid, x_coord, y_coord, direction, loop_start)
-      new_value = grid.move_pointer(x_coord, y_coord)
+      new_value = grid.move_pointer(x_coord, y_coord)&.value
       if new_value == '.'
         grid.change_value(x_coord, y_coord, 'X')
         []

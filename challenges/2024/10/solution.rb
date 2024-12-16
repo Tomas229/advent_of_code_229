@@ -10,7 +10,7 @@ module Year2024
     def part_1
       sum = 0
       @grid.each_coord do |x, y|
-        sum += find_peak(x, y).uniq.size if @grid.coord(x, y).zero?
+        sum += find_peak(x, y).uniq.size if @grid.check_cell(x, y)&.value&.zero?
       end
       sum
     end
@@ -18,7 +18,7 @@ module Year2024
     def part_2
       sum = 0
       @grid.each_coord do |x, y|
-        sum += find_peak(x, y).size if @grid.coord(x, y).zero?
+        sum += find_peak(x, y).size if @grid.check_cell(x, y)&.value&.zero?
       end
       sum
     end
@@ -30,13 +30,13 @@ module Year2024
     end
 
     def find_peak(x_coords, y_coords)
-      value = @grid.coord(x_coords, y_coords)
+      value = @grid.check_cell(x_coords, y_coords)&.value
       return [[x_coords, y_coords]] if value == 9
 
       res = []
       COORDS.each do |coord|
         new_cords = coord.zip([x_coords, y_coords]).map(&:sum)
-        res += find_peak(*new_cords) if @grid.coord(*new_cords)&.public_send(:-, value) == 1
+        res += find_peak(*new_cords) if @grid.check_cell_value(*new_cords)&.public_send(:-, value) == 1
       end
       res
     end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+COORDS = { N: [0, -1], S: [0, 1], E: [1, 0], W: [-1, 0] }.freeze
+
 # Grid. An y-sized array of x-sized arrays representing a Grid.
 class Grid
   attr_reader :x, :y, :pointer
@@ -40,6 +42,18 @@ class Grid
     check_cell(x_coord, y_coord)&.value
   end
 
+  # Checks the cell at a cardinal direction from the pointer or from a point if given x_coord and y_coord
+  # @param [Symbol] direction A cardinal direction used to check
+  # @param [Integer] x_coord
+  # @param [Integer] y_coord
+  # @return [Grid::Cell, nil] returns a Cell at the direction. Nil if is not a valid coordinate.
+  def check_in_direction(direction, x_coord = nil, y_coord = nil)
+    dx, dy = COORDS[direction]
+    x_coord ||= pointer[0]
+    y_coord ||= pointer[1]
+    check_cell(x_coord + dx, y_coord + dy)
+  end
+
   # Updates value saved at (x_coord, y_coord)
   # @param [Integer] x_coord
   # @param [Integer] y_coord
@@ -55,11 +69,35 @@ class Grid
   # Updates pointer position to (x_coord, y_coord) if its a valid position.
   # @param [Integer] x_coord
   # @param [Integer] y_coord
-  # @return [Grid::Cell,, NilClass] returns the object saved at (x_coord, y_coord). Nil if is not a valid coordinate.
+  # @return [Grid::Cell,, NilClass] returns a Cell at (x_coord, y_coord). Nil if is not a valid coordinate.
   def move_pointer(x_coord, y_coord)
     new_pos_value = check_cell(x_coord, y_coord)
     @pointer = [x_coord, y_coord] if new_pos_value
     new_pos_value
+  end
+
+  # Moves the pointer at the provided direction.
+  # @param [Symbol] direction
+  # @return [Grid::Cell,, NilClass] returns a Cell at the direction. Nil if is not a valid coordinate.
+  def move_pointer_in_direction(direction)
+    new_cell = check_in_direction(direction)
+    @pointer = [new_cell.x, new_cell.y] if new_cell
+    new_cell
+  end
+
+  # Searches for an object in a specific direction. If a block is passed uses that to search.
+  # @param [Symbol] direction
+  # @param [Object, NilClass] value
+  # @return [Grid::Cell, nil] returns a Cell with the object. Nil if it wasn't found.
+  def search_in_direction(direction, value = nil)
+    dx, dy = COORDS[direction]
+    x_coord = pointer[0] + dx
+    y_coord = pointer[1] + dy
+    while (res = check_cell(x_coord, y_coord)) && block_given? ? !yield(res.value) : (res&.value != value)
+      x_coord += dx
+      y_coord += dy
+    end
+    res
   end
 
   # Prints the whole grid

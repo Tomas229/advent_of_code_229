@@ -6,18 +6,37 @@ RSpec.describe Year2024::Day15 do
   let(:input) { File.read(File.join(File.dirname(__FILE__), '../../../challenges/2024/15/input.txt')) }
   let(:example_input) do
     <<~EOF
-      change
-      me
+      ##########
+      #..O..O.O#
+      #......O.#
+      #.OO..O.O#
+      #..O@..O.#
+      #O#..O...#
+      #O..O..O.#
+      #.OO.O.OO#
+      #....O...#
+      ##########
+
+      <vv>^<v^>v>^vv^v>v<>v^v<v<^vv<<<^><<><>>v<vvv<>^v^>^<<<><<v<<<v^vv^v>^
+      vvv<<^>^v^^><<>>><>^<<><^vv^^<>vvv<>><^^v>^>vv<>v<<<<v<^v>^<^^>>>^<v<v
+      ><>vv>v^v^<>><>>>><^^>vv>v<^^^>>v^v^<^^>v^^>v^<^v>v<>>v^v^<v>v^^<^^vv<
+      <<v<^>>^^^^>>>v^<>vvv^><v<<<>^^^vv^<vvv>^>v<^^^^v<>^>vvvv><>>v^<<^^^^^
+      ^><^><>>><>^^<<^^v>>><^<v>^<vv>>v>>>^v><>^v><<<<v>>v<v<v>vvv>^<><<>^><
+      ^>><>^v<><^vvv<^^<><v<<<<<><^v<<<><<<^^<v<^^^><^>>^<v^><<<^>>^v<v^v<v^
+      >^>>^v>vv>^<<^v<>><<><<v<<v><>v<^vv<<<>^^v^>^^>>><<^v>>v^v><^^>>^<>vv^
+      <><^^>^^^<><vvvvv^v<v<<>^v<v>v<<^><<><<><<<^^<<<^<<>><<><^^^>^^<>^>v<>
+      ^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>
+      v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^
     EOF
   end
 
   describe 'part 1' do
-    it 'returns nil for the example input' do
-      expect(described_class.part_1(example_input)).to eq(nil)
+    it 'returns 10092 for the example input' do
+      expect(described_class.part_1(example_input)).to eq(10_092)
     end
 
-    it 'returns nil for my input' do
-      expect(described_class.part_1(input)).to eq(nil)
+    it 'returns 1318523 for my input' do
+      expect(described_class.part_1(input)).to eq(1_318_523)
     end
   end
 

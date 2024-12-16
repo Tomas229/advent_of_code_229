@@ -60,4 +60,15 @@ class Grid
       end
     end
   end
+
+  # Representation of a cell on the grid.
+  class Cell
+    attr_reader :x, :y, :value
+
+    def initialize(x_coord, y_coord, value)
+      @x = x_coord
+      @y = y_coord
+      @value = value
+    end
+  end
 end

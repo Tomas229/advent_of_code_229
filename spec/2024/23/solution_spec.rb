@@ -52,12 +52,12 @@ RSpec.describe Year2024::Day23 do
   end
 
   describe 'part 2' do
-    it 'returns nil for the example input' do
-      expect(described_class.part_2(example_input)).to eq(nil)
+    it 'returns "co,de,ka,ta" for the example input' do
+      expect(described_class.part_2(example_input)).to eq('co,de,ka,ta')
     end
 
-    it 'returns nil for my input' do
-      expect(described_class.part_2(input)).to eq(nil)
+    it 'returns "cc,dz,ea,hj,if,it,kf,qo,sk,ug,ut,uv,wh" for my input' do
+      expect(described_class.part_2(input)).to eq('cc,dz,ea,hj,if,it,kf,qo,sk,ug,ut,uv,wh')
     end
   end
 end
